@@ -25,3 +25,12 @@ Secound Link:- http://localhost:9092/actuator/health
    OPEN: Circuit breaker blocks all requests to the Catalog Service due to failures.
    HALF-OPEN: The system tests the Catalog Service with a few requests to see if it's back up.
    CLOSED: Normal requests are sent to the Catalog Service because it's working fine again.
+
+RETRY CALLING METHOD
+
+Let’s say you are fetching user data from another service:
+
+First attempt: Fails because the service is down.
+Retry 1: Waits for 2 seconds and tries again.
+Retry 2-5: Continues retrying with a 2-second gap.
+If retries fail: The fallback method is triggered, returning a default response.
