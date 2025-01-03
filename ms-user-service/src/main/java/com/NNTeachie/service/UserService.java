@@ -2,6 +2,7 @@ package com.NNTeachie.service;
 
 import com.NNTeachie.dto.OrdersDto;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,9 +24,14 @@ public class UserService {
 
     private static final String USERSERVICE = "userService";
 
-    @CircuitBreaker(name = USERSERVICE, fallbackMethod = "getAllProducts")
+    private int attempt = 1;
+
+//    @CircuitBreaker(name = USERSERVICE, fallbackMethod = "getAllProducts")
+    @Retry(name = USERSERVICE,fallbackMethod = "getAllProducts")
     public List<OrdersDto> displayOrders(String category) {
+
         String url = category == null ? BASRURL : BASRURL + "/" + category;
+        System.out.println("retry method called "+attempt++ +"times "+"at "+new Date());
         return restTemplate.getForObject(url, ArrayList.class);
     }
 
