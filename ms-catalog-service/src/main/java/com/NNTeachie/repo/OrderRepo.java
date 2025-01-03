@@ -1,0 +1,12 @@
+package com.NNTeachie.repo;
+
+import com.NNTeachie.dto.OrdersDto;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface OrderRepo extends JpaRepository<OrdersDto, Integer> {
+    List<OrdersDto> findByCatagory(String name);
+}
